@@ -1,4 +1,4 @@
-name: Convert YOLO11m to ONNX
+name: Convert YOLO11m-pose to ONNX
 
 on:
   workflow_dispatch:
@@ -24,12 +24,12 @@ jobs:
 
       - name: Convert to ONNX
         run: |
-          python -c "from ultralytics import YOLO; YOLO('yolo11m.pt').export(format='onnx')"
+          python -c "from ultralytics import YOLO; YOLO('yolo11m-pose.pt').export(format='onnx')"
 
       - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add yolo11m.onnx
-          git commit -m "Add YOLO11m ONNX model" || echo "No changes"
+          git add yolo11m-pose.onnx
+          git commit -m "Add YOLO11m-pose ONNX model" || echo "No changes"
           git push
