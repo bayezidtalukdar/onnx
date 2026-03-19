@@ -20,7 +20,7 @@ jobs:
 
       - name: Download model
         run: |
-          wget https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11m.pt
+          wget https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11m-pose.pt
 
       - name: Convert to ONNX
         run: |
