@@ -1,0 +1,43 @@
+name: Convert YOLO11m to ONNX
+
+on:
+  workflow_dispatch:  # allows manual trigger
+  push:
+    branches: [ "main" ]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install ultralytics
+
+      - name: Download YOLO11m model
+        run: |
+          wget https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11m.pt
+
+      - name: Convert to ONNX
+        run: |
+          python -c "from ultralytics import YOLO; YOLO('yolo11m.pt').export(format='onnx')"
+
+      - name: Move ONNX to repo root
+        run: |
+          mv yolo11m.onnx ./yolo11m.onnx
+
+      - name: Commit and push ONNX file
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add yolo11m.onnx
+          git commit -m "Add YOLO11m ONNX model" || echo "No changes to commit"
+          git push
